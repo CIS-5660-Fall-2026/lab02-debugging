@@ -2,7 +2,9 @@
 
 # Luke Kwon
 Team Member: Nathan Chortek
+
 Link: https://www.shadertoy.com/view/fXcGzs
+
 Bug:
 1. Line 97: vec -> vec2, Found via compile error
 2. Line 100: uv -> uv2, The heavily distorted image suggested there was an issue with the ray construction, and it turned out uv2 was being computed but not used.
