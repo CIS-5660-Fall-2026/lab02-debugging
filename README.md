@@ -1,3 +1,17 @@
+Bryan Chung - Lab 02
+
+[Shadertoy link](https://www.shadertoy.com/view/fXc3zs)
+
+- Line 97: fixed uv2 type (found by compile error)
+- Line 100: fixed using uv instead of uv2 (found by tracing through where uv2 is used)
+- Line 11: fixed aspect ratio being x / x (found by reading through raycast)
+- Line 75: fixed reflect() call (found by tracing through specReflCol code)
+- Line 18: increased max raymarch distance (found by trying to visually match output, ground plane extends farther)
+
+Worked with from Zachary L and Charlie W
+
+---
+
 # lab02-debugging
 
 # Setup 
