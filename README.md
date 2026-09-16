@@ -8,7 +8,7 @@
 - Line 75: fixed reflect() call (found by tracing through specReflCol code)
 - Line 18: increased max raymarch distance (found by trying to visually match output, ground plane extends farther)
 
-Worked with from Zachary L and Charlie W
+Worked with Zachary L and Charlie W
 
 ---
 
