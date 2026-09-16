@@ -70,8 +70,17 @@ void march(vec3 origin, vec3 dir, out float t, out int hitObj) {
 
 ### Bug 4:
 Take the `abs` of `m` in `march`. Sometimes we step BEHIND the SDF surface, but we don't want to include ALL negative m values, just ones close to zero.
-        if(abs(m) < 0.01) {
-            return;
-        }
+```glsl
+if(abs(m) < 0.01) {
+    return;
+}
+```
 
 ### Bug 5:
+Replace `eye` with `dir` in `sdf3D`. Reflect takes vectors, not positions.
+```glsl
+dir = reflect(dir, nor);
+```
+Found by previewing the reflections in black (`specReflCol = vec3(0.f)`), which indicated something was wrong with how we calculated reflections.
+
+
