@@ -2,7 +2,7 @@
 
 **Team members:** Zhuoyang Pan, Yao Tang
 
-**Shadertoy solution:** Link to be added.
+**Shadertoy solution:** [Lab 02 Debugging](https://www.shadertoy.com/view/NXdGzs)
 
 This lab started with a [broken shader](https://www.shadertoy.com/view/flGfRc) of three reflective spheres over a patterned floor. The goal was to find the bugs and reproduce the [reference video](https://github.com/user-attachments/assets/281fe7ff-1145-4a94-b7c2-b05a31d943cc). The changes are in [image.glsl](shaders/image.glsl); [common.glsl](shaders/common.glsl) is unchanged.
 
