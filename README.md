@@ -17,3 +17,16 @@ Extra credit if you can find all FIVE bugs.
 - In the README, create a link to your shader toy solution with the bugs corrected
 - In the README, describe each bug you found and include a sentence about HOW you found it.
 - Make sure all three of your shadertoys are set to UNLISTED or PUBLIC (so we can see them!)
+
+
+https://www.shadertoy.com/view/73cGRl
+
+In mainImage, I found the initial bug where we had vec uv2 = 2.0 * uv - vec2(1.0); When I tried to run it, the error pointed me to that spot. 
+
+Also in mainImage, I saw that raycast was using uv instead of uv2. I found this when just looking around the initial bug. 
+
+In raycast, I found the bug where H *= len * iResolution.x / iResolution.x; I found this because the scene looked a little bit chonky.
+
+I found the issue in sdf3D where we were using the eye position instead of dir for our reflect function. I found this because I noticed that we didn't have any reflections, so I guessed that there was something wrong with how we were getting our reflected rays. 
+
+We would see like the blackhole effect near objects, and I remembered this issue from our last lecture. I went to the march function and just increased our max number of steps. 
