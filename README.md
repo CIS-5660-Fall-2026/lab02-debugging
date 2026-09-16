@@ -21,7 +21,7 @@ Extra credit if you can find all FIVE bugs.
 
 # My submission
 - Team members: Mark Melkumyan
-- [Shadertoy link](https://www.shadertoy.com/view/flGfRc)
+- [Shadertoy link](https://www.shadertoy.com/view/fX33zs)
 
 ## Bugs:
 
@@ -35,6 +35,10 @@ Solution:
 vec2 uv2 = 2.0 * uv - vec2(1.0);
 ```
 Found because of the compile error (red text).
+`raycast` should also use `uv2` instead of `uv`: 
+```glsl
+raycast(uv2, dir, eye, ref);
+```
 
 ### Bug 2:
 Screenspace does not normalize aspect ratio.
@@ -50,7 +54,24 @@ Solution:
 float aspect = iResolution.x / iResolution.y;
 uv2.x *= aspect;
 ```
+Fixing line 10 also works! Should be x/y, not x/x.
+```glsl
+H *= len * iResolution.x / iResolution.y;
+```
 
 ### Bug 3:
+Increase max iterations of `march` (64 is too low!). Found because I noticed the warping around the spheres, which indicates the ray stops before it can get past it.
+```glsl
+void march(vec3 origin, vec3 dir, out float t, out int hitObj) {
+    t = 0.001;
+    // increase max iterations (64 is too low!)
+    for(int i = 0; i < 256; ++i) {
+```
+
 ### Bug 4:
+Take the `abs` of `m` in `march`. Sometimes we step BEHIND the SDF surface, but we don't want to include ALL negative m values, just ones close to zero.
+        if(abs(m) < 0.01) {
+            return;
+        }
+
 ### Bug 5:
