@@ -1,5 +1,14 @@
 # lab02-debugging
 
+# Submission
+- Yiding Tian (worked alone)
+- [Shader Link All 5 solved] (https://www.shadertoy.com/view/f333zs)
+- Bug 1 `vec2 uv2 = 2.0 * uv - vec2(1.0);` Type error suggested by compiler
+- Bug 2 `raycast(uv2, dir, eye, ref);` Declared `uv2` but never used and used `uv` instead
+- Bug 3 `H *= len * iResolution.x / iResolution.y;` The scene looked squashed in y direction so must be a perspective error
+- Bug 4 `dir = reflect(dir, nor);` Specular reflection was not working so the reflection must be wrong
+- Bug 5 `for(int i = 0; i < 256; ++i) {` The chessboard looked cut off so ray marching distance was not enough
+
 # Setup 
 
 Create a [Shadertoy account](https://www.shadertoy.com/). Either fork this shadertoy, or create a new shadertoy and copy the code from the [Debugging Puzzle](https://www.shadertoy.com/view/flGfRc).
