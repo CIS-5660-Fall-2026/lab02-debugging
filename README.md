@@ -1,62 +1,39 @@
-# lab02-debugging
+# Lab 02: Debugging
 
-## Solution
+**Team members:** Zhuoyang Pan, Yao Tang
 
-**Team member:** Yao Tang
+**Shadertoy solution:** Link to be added.
 
-**Shadertoy solution:** Pending publication from a Shadertoy account. The corrected source and rendered preview are included below; the submission still needs an **Unlisted** or **Public** Shadertoy URL.
+This lab started with a [broken shader](https://www.shadertoy.com/view/flGfRc) of three reflective spheres over a patterned floor. The goal was to find the bugs and reproduce the [reference video](https://github.com/user-attachments/assets/281fe7ff-1145-4a94-b7c2-b05a31d943cc). The changes are in [image.glsl](shaders/image.glsl); [common.glsl](shaders/common.glsl) is unchanged.
 
-- [Common tab source](shaders/common.glsl) — copied unchanged from the original shader.
-- [Corrected Image tab source](shaders/image.glsl).
-- [Original debugging puzzle](https://www.shadertoy.com/view/flGfRc), by amally.
+## Bugs and fixes
 
-![Corrected shader at iTime = 47.12 seconds](images/solution.png)
+### 1. `vec` should be `vec2`
 
-### Bugs found and how they were found
+The shader initially failed to compile at `vec uv2`. The compiler reported that `vec` was undefined. Since the expression produces two coordinates, changing the type to `vec2` fixed this error.
 
-1. **Invalid GLSL type prevents compilation.** `vec uv2` uses a type that GLSL does not define. Changed it to `vec2 uv2`. **How found:** Compiling the original shader reported an undeclared `vec` identifier and a syntax error at `uv2`; checking the two-component expression identified the required type.
+### 2. The camera used the wrong UV coordinates
 
-2. **The camera receives coordinates in the wrong range.** `mainImage` computes `uv2` in `[-1, 1]`, but passes `uv`, which is in `[0, 1]`, to `raycast`. Changed the call to `raycast(uv2, dir, eye, ref)`. **How found:** Tracing the center pixel showed that its camera coordinates were `(0.5, 0.5)` rather than `(0, 0)`, so the center ray missed the camera's reference point.
+`mainImage` calculated `uv2` in the range `[-1, 1]`, but still passed `uv`, which ranges from `[0, 1]`, into `raycast`. Following the center pixel through the calculation exposed the problem: it reached the camera as `(0.5, 0.5)`, even though `(0, 0)` is what points at the center of the scene. The call now uses `raycast(uv2, dir, eye, ref)`.
 
-3. **The aspect-ratio correction always equals one.** `iResolution.x / iResolution.x` ignores the viewport height and stretches the scene on a nonsquare canvas. Changed the denominator to `iResolution.y`. **How found:** Inspecting the horizontal camera-vector calculation revealed the cancellation; a rendered sphere-mask check then confirmed circular bounds at landscape, square, and portrait resolutions.
+### 3. The aspect ratio was always 1
 
-4. **Reflection uses the camera position as the incident direction.** `reflect(eye, nor)` reflects a world-space position instead of the incoming ray. Changed it to `reflect(dir, nor)` and stored the result in `reflectedDir`. **How found:** Tracing the reflection inputs showed that `eye` has length 15, whereas `dir` is normalized. This both changes the reflection angle and violates the ray marcher's assumption that advancing by an SDF distance moves the ray that distance.
+The horizontal camera vector was scaled by `iResolution.x / iResolution.x`. Both values are the width, so the ratio cancels out. This explains why the scene stretches in a rectangular window. Changing the denominator to `iResolution.y` accounts for the actual width and height. Checking the center sphere at landscape, square, and portrait resolutions confirmed that it stays circular.
 
-5. **The reflection trace overwrites the primary intersection.** Reusing `nor` for the reflected surface makes the Fresnel calculation use the wrong surface normal. Reusing `t` and `hitObj` also makes the returned `Intersection` combine a primary position with secondary-hit metadata. Added separate `reflectedNormal`, `reflectedT`, and `reflectedObj` variables. **How found:** Following the assignments between the two `march` calls and the final Fresnel/return expressions exposed the overwritten values. A per-pixel diagnostic verified that the corrected `sdf3D` preserves the primary hit distance, position, and object ID.
+### 4. The reflection used a position instead of a direction
 
-The secondary hit position also uses `reflectedOrigin + reflectedT * reflectedDir`, so it includes the same `0.01` origin offset used by the reflection march. The original camera orientation, animated orbit, floor pattern, materials, and Common code are preserved.
+Tracing the reflection calculation led to `reflect(eye, nor)`. Here, `eye` is the camera's position, while `reflect` needs the incoming ray direction. It also has length 15 in this scene, which makes the ray marcher take incorrectly scaled steps. Replacing it with `reflect(dir, nor)` gives the correct reflected direction and preserves the unit length expected by the marcher.
 
-### Validation
+### 5. The reflected hit overwrote the first hit
 
-- Reproduced the original shader's compilation error in Chrome's WebGL 2 implementation; the corrected Common + Image source compiles and links successfully.
-- Pasted the corrected Image source into the original Shadertoy editor and compiled successfully there as well.
-- Rendered the solution at `960 x 540` at `iTime = 0`, `6`, and `47.12`, plus `640 x 640` and `540 x 960` at `iTime = 0`.
-- A diagnostic render of the center sphere produced circular bounds of `176 x 176`, `208 x 208`, and `314 x 314` pixels at those three resolutions, respectively.
-- Checked primary-intersection consistency across all `480 x 270` pixels at three animation times; no mismatches were found.
-- Visually compared the colored reflective spheres, diagonal floor pattern, sky, and moving camera with the supplied reference video. The screenshot above is an actual render of the included GLSL.
+Inside `sdf3D`, the second ray march reused `t` and `hitObj`, and its normal replaced `nor`. Following those variables to the end of the function showed two problems: the Fresnel calculation could use the reflected surface's normal, and the returned intersection mixed the first hit's position with the second hit's distance and object ID.
 
-### Publish on Shadertoy
+The reflection now has its own `reflectedT`, `reflectedObj`, and `reflectedNormal`. This keeps the first surface's normal available for Fresnel and preserves the original intersection. The reflected hit position also includes the same `0.01` offset used to start the second ray, so both calculations use the same origin.
 
-1. Sign in and fork the [original puzzle](https://www.shadertoy.com/view/flGfRc), or create a new shader with Common and Image tabs.
-2. Put [common.glsl](shaders/common.glsl) in **Common** and [image.glsl](shaders/image.glsl) in **Image**. No input channels are needed.
-3. Compile, save with visibility set to **Unlisted** or **Public**, and replace the pending solution text above with the resulting Shadertoy link.
+## Result
 
----
+The corrected shader compiles in Shadertoy and in WebGL 2. It was checked at `960 x 540`, `640 x 640`, and `540 x 960`, and at several points in the camera animation. A separate diagnostic compared the first ray hit with the intersection returned after reflection; their distances, positions, and object IDs agreed at every tested pixel.
 
-# Setup 
+The render below shows the colored spheres, floor reflections, and sky after the fixes, at `iTime = 47.12` seconds.
 
-Create a [Shadertoy account](https://www.shadertoy.com/). Either fork this shadertoy, or create a new shadertoy and copy the code from the [Debugging Puzzle](https://www.shadertoy.com/view/flGfRc).
-
-Let's practice debugging! We have a broken shader. It should produce output that looks like this:
-[Unbelievably beautiful shader](https://github.com/user-attachments/assets/281fe7ff-1145-4a94-b7c2-b05a31d943cc)
-
-It don't do that. Correct THREE of the FIVE bugs that are messing up the output. You are STRONGLY ENCOURAGED to work with a partner and pair program to force you to talk about your debugging thought process out loud.
-
-Extra credit if you can find all FIVE bugs.
-
-# Submission
-- Create a pull request to this repository
-- In the README, include the names of both your team members
-- In the README, create a link to your shader toy solution with the bugs corrected
-- In the README, describe each bug you found and include a sentence about HOW you found it.
-- Make sure all three of your shadertoys are set to UNLISTED or PUBLIC (so we can see them!)
+![Corrected shader](images/solution.png)
