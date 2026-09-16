@@ -1,19 +1,104 @@
-# lab02-debugging
+# Lab 02 - Debugging
 
-# Setup 
+## Team Member
+- Xuan Zhu
 
-Create a [Shadertoy account](https://www.shadertoy.com/). Either fork this shadertoy, or create a new shadertoy and copy the code from the [Debugging Puzzle](https://www.shadertoy.com/view/flGfRc).
+## Links
+- [Shadertoy Demo](https://www.shadertoy.com/view/NXt3Rs)
 
-Let's practice debugging! We have a broken shader. It should produce output that looks like this:
-[Unbelievably beautiful shader](https://github.com/user-attachments/assets/281fe7ff-1145-4a94-b7c2-b05a31d943cc)
+## Bugs Fixed
 
-It don't do that. Correct THREE of the FIVE bugs that are messing up the output. You are STRONGLY ENCOURAGED to work with a partner and pair program to force you to talk about your debugging thought process out loud.
+### 1. Wrong UV type
+```glsl
+// Before
+vec uv2 = 2.0 * uv - vec2(1.0);
 
-Extra credit if you can find all FIVE bugs.
+// After
+vec2 uv2 = 2.0 * uv - vec2(1.0);
+```
 
-# Submission
-- Create a pull request to this repository
-- In the README, include the names of both your team members
-- In the README, create a link to your shader toy solution with the bugs corrected
-- In the README, describe each bug you found and include a sentence about HOW you found it.
-- Make sure all three of your shadertoys are set to UNLISTED or PUBLIC (so we can see them!)
+Found from the GLSL compiler error.
+
+### 2. Wrong UV passed to `raycast`
+```glsl
+// Before
+raycast(uv, dir, eye, ref);
+
+// After
+raycast(uv2, dir, eye, ref);
+```
+
+`uv2` was calculated but never used.
+
+### 3. Wrong aspect ratio
+```glsl
+// Before
+H *= len * iResolution.x / iResolution.x;
+
+// After
+H *= len * iResolution.x / iResolution.y;
+```
+
+The original expression always gave an aspect ratio of 1.
+
+### 4. Wrong reflection direction
+```glsl
+// Before
+dir = reflect(eye, nor);
+
+// After
+dir = reflect(dir, nor);
+```
+
+`reflect()` needs the incident ray direction, not the camera position.
+
+### 5. Primary hit data was overwritten
+```glsl
+float primaryT = t;
+int primaryObj = hitObj;
+```
+
+Saved the first intersection before tracing the reflected ray.
+
+### 6. Primary normal was overwritten
+```glsl
+// Before
+nor = computeNormal(isect2);
+
+// After
+vec3 nor2 = computeNormal(isect2);
+```
+
+This keeps the original normal for the Fresnel calculation.
+
+### 7. Wrong reflected ray origin
+```glsl
+vec3 reflOrigin = isect + dir * 0.01;
+march(reflOrigin, dir, t, hitObj);
+
+vec3 isect2 = reflOrigin + t * dir;
+```
+
+The second intersection should be calculated from the same origin used by `march()`.
+
+### 8. Wrong X-axis rotation
+```glsl
+// Before
+sin(p.y) + cos(p.z)
+
+// After
+sin(amt) * p.y + cos(amt) * p.z
+```
+
+Fixed using the standard X-axis rotation formula.
+
+### 9. Wrong `clamp()` argument order
+```glsl
+// Before
+clamp(0.0, 1.0, value);
+
+// After
+clamp(value, 0.0, 1.0);
+```
+
+GLSL uses `clamp(x, minVal, maxVal)`.
