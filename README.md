@@ -5,7 +5,7 @@ Team Member: Nathan Chortek
 
 Link: https://www.shadertoy.com/view/fXcGzs
 
-Bug:
+Bugs:
 1. Line 97: vec -> vec2, Found via compile error
 2. Line 100: uv -> uv2, The heavily distorted image suggested there was an issue with the ray construction, and it turned out uv2 was being computed but not used.
 3. Line 11: iResolution.x/ iResolution.y, The screen was stretched in the y direction, hinting that something could be wrong with resolution. Searching for a variable named resolution helped fix the problem.
