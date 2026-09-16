@@ -1,6 +1,18 @@
 # lab02-debugging
 
-# Setup 
+# ShaderToy Link
+
+https://www.shadertoy.com/view/s333Rl
+
+# Bugs Found
+
+1. Syntax error, found due to compilation error highlighting
+2. Ray march terminating too early, found because floor cuts off due to missed rays not extending far enough
+3. Aspect ratio issue, found because resolution looks too stretched and found that the raycast() function was not calculating aspect ratio correctly
+4. Not using newly mapped uv value, found because camera was not focused on correct area of scene
+5. Performing specular reflection based on eye not dir, found by walking through basic logic of specular reflection
+
+# Setup
 
 Create a [Shadertoy account](https://www.shadertoy.com/). Either fork this shadertoy, or create a new shadertoy and copy the code from the [Debugging Puzzle](https://www.shadertoy.com/view/flGfRc).
 
@@ -12,6 +24,7 @@ It don't do that. Correct THREE of the FIVE bugs that are messing up the output.
 Extra credit if you can find all FIVE bugs.
 
 # Submission
+
 - Create a pull request to this repository
 - In the README, include the names of both your team members
 - In the README, create a link to your shader toy solution with the bugs corrected
