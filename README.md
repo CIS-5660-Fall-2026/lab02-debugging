@@ -9,7 +9,7 @@ Bugs:
 1. Line 97: vec -> vec2, Found via compile error
 2. Line 100: uv -> uv2, The heavily distorted image suggested there was an issue with ray construction, and it turned out uv2 was being computed but not used.
 3. Line 11: iResolution.x/ iResolution.y, The screen was stretched in the y direction, hinting that something could be wrong with resolution. Searching for a variable named resolution helped fix the problem.
-4. Line 18: i < 64 -> i < 128, There was aliasing around the spheres that usually occurs from having not enough samples, and the board was cut off too early. Therefore, locating the for loop that decides the ray step count and increasing it by 2 fixed the problem.
+4. Line 18: i < 64 -> i < 128, There was aliasing around the spheres that usually occurs from having not enough samples, and the board was cut off too early. Therefore, locating the for loop that decides the ray step count  and increasing it by 2 fixed the problem.
 5. Line 75: reflect(eye,nor) -> reflect(normalize(isect-eye), nor), Specular reflections were not visible, so I located the part of the code that dealt with specular reflections. It turns out the eye was being reflected along the normal, when the ray from the eye to the intersection point should be flipped.
 
 # Setup 
