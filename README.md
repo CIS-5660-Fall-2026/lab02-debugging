@@ -1,19 +1,10 @@
 # lab02-debugging
+Shadertoy viewed [here](https://www.shadertoy.com/view/f3c3zs). The bugs I found are:
+1. (To correct the black screen) Shadertoy provided compiler errors indicated that there was a misspelled variable type (`'vec': undeclared identifier` & `'uv2': syntax error`)
+2. (To correct the "cropping") `vec2 uv2` is never used, so just "redefined" `uv` there instead.
+3. (To correct the "stretching out") The aspect ratio is incorrect: in `raycast`, changed the height (`H`) modification from `H *= len * iResolution.x / iResolution.x` to `H *= len * iResolution.x / iResolution.y`
+4. (To correct no reflection) Corrected the direction of reflection (in `dir = reflect(eye, nor)` to `dir = reflect(dir, nor)`) - thank you to Bryce and Rin for the assistance
+5. (To correct the floor "bending" around the spheres) Increased the step size in `march` (from `i < 64` to `i < 250`) - thank you to Nathan for the hint
 
-# Setup 
-
-Create a [Shadertoy account](https://www.shadertoy.com/). Either fork this shadertoy, or create a new shadertoy and copy the code from the [Debugging Puzzle](https://www.shadertoy.com/view/flGfRc).
-
-Let's practice debugging! We have a broken shader. It should produce output that looks like this:
-[Unbelievably beautiful shader](https://user-images.githubusercontent.com/1758825/200729570-8e10a37a-345d-4aff-8eff-6baf54a32a40.webm)
-
-It don't do that. Correct THREE of the FIVE bugs that are messing up the output. You are STRONGLY ENCOURAGED to work with a partner and pair program to force you to talk about your debugging thought process out loud.
-
-Extra credit if you can find all FIVE bugs.
-
-# Submission
-- Create a pull request to this repository
-- In the README, include the names of both your team members
-- In the README, create a link to your shader toy solution with the bugs corrected
-- In the README, describe each bug you found and include a sentence about HOW you found it.
-- Make sure all three of your shadertoys are set to UNLISTED or PUBLIC (so we can see them!)
+## Assignment Description
+Viewed [here](https://github.com/CIS-5660-Fall-2026/lab02-debugging/blob/main/README.md).
