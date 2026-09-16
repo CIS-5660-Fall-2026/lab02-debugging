@@ -17,3 +17,10 @@ Extra credit if you can find all FIVE bugs.
 - In the README, create a link to your shader toy solution with the bugs corrected
 - In the README, describe each bug you found and include a sentence about HOW you found it.
 - Make sure all three of your shadertoys are set to UNLISTED or PUBLIC (so we can see them!)
+
+# how i found the bugs
+1. shadertoy showed me a compile error with "vec" -> "vec2"
+2. I substituted "uv" with "uv2" in raycast because we want to go from [-1, 1]
+3. fixed the aspect ratio in raycast because the screen was squished
+4. fix the reflection by changing the reflection direction, after I noticed the reflections were off
+5. I increased the number of steps in the raymarch because the it seemed to cut off too early.
