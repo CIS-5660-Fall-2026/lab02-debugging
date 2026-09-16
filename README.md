@@ -1,7 +1,3 @@
-
-
-https://github.com/user-attachments/assets/b0710f0d-92f2-438a-91d7-63ec4506c161
-
 # lab02-debugging
 
 # Setup 
@@ -9,8 +5,7 @@ https://github.com/user-attachments/assets/b0710f0d-92f2-438a-91d7-63ec4506c161
 Create a [Shadertoy account](https://www.shadertoy.com/). Either fork this shadertoy, or create a new shadertoy and copy the code from the [Debugging Puzzle](https://www.shadertoy.com/view/flGfRc).
 
 Let's practice debugging! We have a broken shader. It should produce output that looks like this:
-[Unbelievably beautiful shader]
-https://github.com/user-attachments/assets/281fe7ff-1145-4a94-b7c2-b05a31d943cc
+[Unbelievably beautiful shader](https://github.com/user-attachments/assets/281fe7ff-1145-4a94-b7c2-b05a31d943cc)
 
 It don't do that. Correct THREE of the FIVE bugs that are messing up the output. You are STRONGLY ENCOURAGED to work with a partner and pair program to force you to talk about your debugging thought process out loud.
 
