@@ -1,4 +1,4 @@
-Bryan Chung - Lab 02
+# Bryan Chung - Lab 02
 
 [Shadertoy link](https://www.shadertoy.com/view/fXc3zs)
 
