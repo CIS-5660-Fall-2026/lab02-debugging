@@ -1,3 +1,18 @@
+Name: Yikai Li
+
+solution: https://www.shadertoy.com/view/NX33zl
+
+bug 1: vec uv2 = 2.0 * uv - vec2(1.0); compile error
+bug 2: raycast(uv, dir, eye, ref); uv2 was a value never used 
+bug 3: H *= len * iResolution.x / iResolution.x; value isn't changed, height/width ratio not applied
+bug 4: dir = reflect(eye, nor); eye is a position not a direction
+bug 5(guess): for(int i = 0; i < 64; ++i) {
+        vec3 pos = origin + t * dir;
+        there is some white points on edge and floor not extended enough, 64 steps is not enough to make the image converge, so expand it to 256
+
+
+
+
 # lab02-debugging
 
 # Setup 
