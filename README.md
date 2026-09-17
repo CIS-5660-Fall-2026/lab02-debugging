@@ -1,5 +1,19 @@
 # lab02-debugging
 
+# Found Bugs
+Bug 1: uv2 was a vec and not a vec2
+
+Bug 2: uv was used in raycast instead of uv2;
+
+Bug 3: H should be divided by y instead of x
+
+Bug 4: march distance is too short
+
+Bug 5: reflect should not take the reflecting point and instead take the incoming dir
+
+https://www.shadertoy.com/view/NXc3zs
+
+
 # Setup 
 
 Create a [Shadertoy account](https://www.shadertoy.com/). Either fork this shadertoy, or create a new shadertoy and copy the code from the [Debugging Puzzle](https://www.shadertoy.com/view/flGfRc).
