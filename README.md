@@ -1,3 +1,29 @@
+**Name:** Zhiyao Luo  
+**Debugging Puzzle solutions:**   
+https://www.shadertoy.com/view/f3c3Rs  
+
+## Bugs Found  
+
+### Bug 1
+While reading the camera code, I noticed `iResolution.x / iResolution.x`. Since this always equals 1, I checked the aspect ratio calculation and changed the second `x` to `y`.
+
+### Bug 2
+I noticed the visible boundary was too close. I checked the loop limit and changed it from 64 iterations to 512.
+
+### Bug 3
+The shader gave a compiler error at `vec uv2`. I changed it to `vec2 uv2`.
+
+### Bug 4
+After fixing bug3, I noticed it was calculated but never used. I found this by reading through the code and changed `raycast(uv, ...)` to `raycast(uv2, ...)`.
+
+### Bug 5
+The reflection did not look correct. I drew the eye position, ray direction, and surface normal, and realized that `reflect()` needs the ray direction, so I changed `reflect(eye, nor)` to `reflect(dir, nor)`.  
+
+---
+<br>
+<br>
+
+
 # lab02-debugging
 
 # Setup 
