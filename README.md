@@ -14,6 +14,13 @@ Extra credit if you can find all FIVE bugs.
 # Submission
 - Create a pull request to this repository
 - In the README, include the names of both your team members
+    * Jacob Mollot & Julie Swei
 - In the README, create a link to your shader toy solution with the bugs corrected
+    * https://www.shadertoy.com/view/NXt3zs
 - In the README, describe each bug you found and include a sentence about HOW you found it.
+    1. use vec2 at line 97 because vec is undefined
+    2. use uv2 at line 100 because uv wasn't mapped properly
+    3. march i = 256 gives more rays and ability to render with more depth
+    4. line 11 -> aspect ratio was iResolution.x / iResolution.x
+    5. line 75 -> use dir instead eye because that takes the actual point into account
 - Make sure all three of your shadertoys are set to UNLISTED or PUBLIC (so we can see them!)
