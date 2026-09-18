@@ -1,3 +1,14 @@
+bug 1: rename vec to vec2
+bug 2: actually use uv2
+bug 3: H *= len * iResolution.x / iResolution.y; instead of divided by x
+bug 4: for(int i = 0; i < 256; ++i)  (instead of only 64)
+bug 5: dir = reflect(dir, nor);
+
+link: https://www.shadertoy.com/view/sXcGRl
+
+
+
+
 # lab02-debugging
 
 # Setup 
